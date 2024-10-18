@@ -3,13 +3,19 @@
 //  we need some navigation
 import { db } from "@/utils/dbConnection";
 import Image from "next/image";
+import { redirect } from "next/navigation";
+import { revalidatePath } from "next/cache";
 
 export default async function IndividualDesitinationsPage({ params }) {
-  const destination = await db.query(
-    `SELECT * FROM destinations WHERE id = ${params.id};`
+  const destinations = await db.query(
+    `SELECT * FROM destinations WHERE id = $1 LIMIT 1;`,
+    [params.id]
   );
-  const wrangledDestination = destination.rows;
-  console.log(wrangledDestination, "this is my destination");
+  if (destinations.rows.length === 0) {
+    return "Destination not found";
+  }
+  const destination = destinations.rows[0];
+  console.log(destination, "this is my destination");
   // here I need to get my posts from the database filtering by id (WHERE id = ${params.id})
   // here In need to handle the submit fro the comments form
   async function handleSubmit(formValues) {
@@ -27,32 +33,48 @@ export default async function IndividualDesitinationsPage({ params }) {
       `INSERT INTO comments (user_name, comment, recommendation, destination_id) VALUES ($1, $2, $3, $4)`,
       [formData.user_name, formData.comment, formData.recommendation, params.id]
     );
+    revalidatePath(`/destinations/${params.id}`);
+    redirect(`/destinations/${params.id}`);
   }
-  const comments = await db.query(`SELECT
-    comments.user_name, comments.comment, comments.recommendation
+  // here i needed to remeber to add the comments.id as it wasn't in my comments so I couldn't delete it
+  const comments = await db.query(
+    `SELECT
+    comments.id, comments.user_name, comments.comment, comments.recommendation
   FROM comments
-  JOIN destinations ON destinations.id = comments.destination_id  WHERE destination_id = ${params.id}`);
+  JOIN destinations ON destinations.id = comments.destination_id  WHERE destination_id = $1`,
+    [params.id]
+  );
   console.log(comments, "these are my comments");
   const wrangledComments = comments.rows;
 
+  async function handleDelete(formValues) {
+    "use server";
+    const commentId = formValues.get("comment_id");
+    const deleteComment = await db.query(
+      `DELETE FROM comments WHERE id = $1 RETURNING *`,
+      [commentId]
+    );
+    revalidatePath(`/destinations/${params.id}`);
+    redirect(`/destinations/${params.id}`);
+  }
+
   return (
     <>
-      {wrangledDestination.map((destination) => (
-        <div key={destination.id} className="flex flex-col items-center">
-          <Image
-            src={destination.image}
-            alt={destination.destination_name}
-            width={200}
-            height={200}
-          />
-          <h2>{destination.destination_name}</h2>
-          <h3>{destination.location}</h3>
-          <p className="p-20">{destination.information}</p>
-        </div>
-      ))}
+      <div key={destination.id} className="flex flex-col items-center">
+        <Image
+          src={destination.image}
+          alt={destination.destination_name}
+          width={200}
+          height={200}
+        />
+        <h2>{destination.destination_name}</h2>
+        <h3>{destination.location}</h3>
+        <p className="p-20">{destination.information}</p>
+      </div>
+
       {/* here i need to display an individual posts and relevant data  */}
       <h2 className="text-center p-10">
-        Tell us what you think of {params.id}.
+        Tell us what you think of {destination.destination_name}.
       </h2>
       <form action={handleSubmit} className="flex flex-col items-center">
         <label htmlFor="user_name">Enter your name.</label>
@@ -83,12 +105,17 @@ export default async function IndividualDesitinationsPage({ params }) {
       </form>
       {/* here I will display a form with inputs that are connected to the database commnents table  */}
       {/* here i need to display the comments associated with the destination */}
+      {/* in order to have the delete button in the form and use a function I had to make the button a form as that is how next js can use it in the database similar to the handleSubmit, the value is comment.id and type="hidden"  so the user doesn't see it*/}
       {wrangledComments.map((comment) => (
-        <div key={comment.id} className="p-10">
-          <h2>{comment.user_name}</h2>
-          <p>{comment.comment}</p>
-          <p>{comment.recommendation}</p>
-        </div>
+        <form action={handleDelete}>
+          <div key={comment.id} className="p-10">
+            <h2>{comment.user_name}</h2>
+            <p>{comment.comment}</p>
+            <p>{comment.recommendation}</p>
+            <input type="hidden" value={`${comment.id}`} name="comment_id" />
+            <button type="submit">Delete this Post</button>
+          </div>
+        </form>
       ))}
     </>
   );

@@ -30,5 +30,6 @@ Please submit your database schema, as is mentioned in the submission instructio
 
 - add metadata
 - add delete button to comments
+  done
 - styling
 - stretch add categories to destination

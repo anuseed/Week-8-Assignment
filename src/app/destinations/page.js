@@ -2,7 +2,7 @@
 //  we need query strings to sort data asc and desc
 //  remember metadata
 import { db } from "@/utils/dbConnection";
-import Link from "next/Link";
+import Link from "next/link";
 
 import Image from "next/image";
 

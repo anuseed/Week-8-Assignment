@@ -29,7 +29,12 @@ Please submit your database schema, as is mentioned in the submission instructio
 # Still to do
 
 - add metadata
-- add delete button to comments
+  done
+  would have liked to add the name of the destination to the url rather than the id not sure where this would be done
+- add delete button to comments rather than post
   done
 - styling
+  very basic using tailwind
 - stretch add categories to destination
+  left this one
+  -- still need to sort post by asc and desc --- finding this a bit tricky as only know how to do so in the client

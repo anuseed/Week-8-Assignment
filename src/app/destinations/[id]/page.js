@@ -6,6 +6,19 @@ import Image from "next/image";
 import { redirect } from "next/navigation";
 import { revalidatePath } from "next/cache";
 
+export async function generateMetadata({ params, searchParams }, parent) {
+  const destinations = await db.query(
+    `SELECT * FROM destinations WHERE id = $1 LIMIT 1;`,
+    [params.id]
+  );
+
+  const destination = destinations.rows[0];
+
+  return {
+    title: destination.destination_name,
+  };
+}
+
 export default async function IndividualDesitinationsPage({ params }) {
   const destinations = await db.query(
     `SELECT * FROM destinations WHERE id = $1 LIMIT 1;`,
@@ -80,12 +93,12 @@ export default async function IndividualDesitinationsPage({ params }) {
         <label htmlFor="user_name">Enter your name.</label>
         <input id="user_name" name="user_name" type="text" required />
         <label htmlFor="comment">
-          Please enter your comment about {params.id}
+          Please enter your comment about {destination.destination_name}
         </label>
         <textarea id="comment" name="comment" required />
         <label htmlFor="recommendation">
-          From 1 to 10, with 10 the highest. How likely are you to recommend{" "}
-          {params.id}{" "}
+          From 1 to 10, with 10 the highest. How likely are you to recommend
+          {destination.destination_name}.
         </label>
         <input
           id="recommendation"
@@ -113,7 +126,12 @@ export default async function IndividualDesitinationsPage({ params }) {
             <p>{comment.comment}</p>
             <p>{comment.recommendation}</p>
             <input type="hidden" value={`${comment.id}`} name="comment_id" />
-            <button type="submit">Delete this Post</button>
+            <button
+              type="submit"
+              className="border-black-400 border-4 bg-pink-400 p-4 m-4"
+            >
+              Delete this Post
+            </button>
           </div>
         </form>
       ))}

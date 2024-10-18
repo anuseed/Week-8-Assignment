@@ -48,7 +48,12 @@ export default function NewDestinationPage() {
           Add an image of your destination by adding an url
         </label>
         <input id="image" name="image" type="text" required />
-        <button type="submit">Save</button>
+        <button
+          type="submit"
+          className="border-black-400 border-4 bg-pink-400 p-4 m-4"
+        >
+          Save
+        </button>
       </form>
     </>
   );

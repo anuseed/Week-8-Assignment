@@ -1,10 +1,15 @@
 // we need some navigation
 //  we need query strings to sort data asc and desc
 //  remember metadata
+
 import { db } from "@/utils/dbConnection";
 import Link from "next/link";
-
 import Image from "next/image";
+
+export const metadata = {
+  title: "Destinations",
+  description: "Choose your destination",
+};
 
 export default async function DestinationsPage() {
   const destinations = await db.query(`SELECT * FROM destinations`);

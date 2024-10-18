@@ -31,7 +31,7 @@ export default async function IndividualDesitinationsPage({ params }) {
   const comments = await db.query(`SELECT
     comments.user_name, comments.comment, comments.recommendation
   FROM comments
-  JOIN destinations ON destinations.id = comments.destination_id `);
+  JOIN destinations ON destinations.id = comments.destination_id  WHERE destination_id = ${params.id}`);
   console.log(comments, "these are my comments");
   const wrangledComments = comments.rows;
 

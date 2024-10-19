@@ -11,17 +11,47 @@ export const metadata = {
   description: "Choose your destination",
 };
 
-export default async function DestinationsPage() {
+export default async function DestinationsPage({ searchParams }) {
   const destinations = await db.query(`SELECT * FROM destinations`);
   console.log(destinations);
   const wrangledDestinations = destinations.rows;
+  const sortBy = searchParams.sort;
+  console.log(sortBy, "this is sort by");
+  const sortDestinations = wrangledDestinations.sort((a, b) => {
+    // if desc:
+    if (sortBy === "desc") {
+      if (a.destination_name > b.destination_name) {
+        return -1;
+      } else if (a.destination_name < b.destination_name) {
+        return 1;
+      }
+      return 0;
+    }
+
+    // otherwise:
+    if (a.destination_name < b.destination_name) {
+      return -1;
+    } else if (a.destination_name > b.destination_name) {
+      return 1;
+    }
+    return 0;
+  });
 
   return (
     <>
       <h1 className="text-center p-20">Choose your destination!</h1>
+      {/* finally got the sort by asc and desc working as I was trying to do it in a select tag which would have required me to use onChange which I can't in a server component, didn't realize that I should be using a link, which I saw in the week 7 workshop */}
+      <div className="flex flex-col p-10">
+        <Link href={`destinations?sort=asc`}>
+          Sort Destnations by Ascending
+        </Link>
+        <Link href={`destinations?sort=desc`}>
+          Sort Destnations by Descending
+        </Link>
+      </div>
 
       <ul className="flex flex-col items-center">
-        {wrangledDestinations.map((destination) => (
+        {sortDestinations.map((destination) => (
           <>
             <Link href={`destinations/${destination.id}`} key={destination.id}>
               {destination.destination_name}

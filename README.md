@@ -38,3 +38,4 @@ Please submit your database schema, as is mentioned in the submission instructio
 - stretch add categories to destination
   left this one
   -- still need to sort post by asc and desc --- finding this a bit tricky as only know how to do so in the client
+  - add a link to got back to destinations or add destination when user submits comment

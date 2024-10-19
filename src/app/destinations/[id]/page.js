@@ -120,7 +120,7 @@ export default async function IndividualDesitinationsPage({ params }) {
       {/* here i need to display the comments associated with the destination */}
       {/* in order to have the delete button in the form and use a function I had to make the button a form as that is how next js can use it in the database similar to the handleSubmit, the value is comment.id and type="hidden"  so the user doesn't see it*/}
       {wrangledComments.map((comment) => (
-        <form action={handleDelete} key={comment.id}>
+        <form action={handleDelete} key={comment.id} className="text-center">
           <div className="p-10">
             <h2>{comment.user_name}</h2>
             <p>{comment.comment}</p>

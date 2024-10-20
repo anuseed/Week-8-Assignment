@@ -43,19 +43,36 @@ export default function NewDestinationPage() {
         <label htmlFor="location" className="p-5">
           Where is your destination?
         </label>
-        <input id="location" name="location" type="text" required />
+        <input
+          id="location"
+          name="location"
+          type="text"
+          className="text-black"
+          required
+        />
         <label htmlFor="information" className="p-5">
           Tell us a bit about your destination.
         </label>
-        <textarea id="information" name="information" required />
+        <textarea
+          id="information"
+          name="information"
+          className="text-black"
+          required
+        />
         <label html="image" className="p-5">
           Add an image of your destination by adding an url.
         </label>
-        <input id="image" name="image" type="text" required />
+        <input
+          id="image"
+          name="image"
+          type="text"
+          className="text-black"
+          required
+        />
         <select
           name="category_id"
           id="category_id"
-          className="m-10 text-neutral-800
+          className="m-10 text-black 
 "
         >
           <option value="">Choose a category for your destination.</option>

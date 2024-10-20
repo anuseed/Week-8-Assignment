@@ -73,29 +73,41 @@ export default async function IndividualDesitinationsPage({ params }) {
 
   return (
     <>
-      <div key={destination.id} className="flex flex-col items-center">
+      <div key={destination.id} className="flex flex-col items-center  ">
         <Image
           src={destination.image}
           alt={destination.destination_name}
+          className="rounded-lg border-2"
           width={200}
           height={200}
         />
-        <h2>{destination.destination_name}</h2>
+        <h2 className="text-2xl p-5">{destination.destination_name}</h2>
         <h3>{destination.location}</h3>
         <p className="p-20">{destination.information}</p>
       </div>
 
       {/* here i need to display an individual posts and relevant data  */}
-      <h2 className="text-center p-10">
+      <h2 className="text-center text-2xl p-10">
         Tell us what you think of {destination.destination_name}.
       </h2>
       <form action={handleSubmit} className="flex flex-col items-center">
         <label htmlFor="user_name">Enter your name.</label>
-        <input id="user_name" name="user_name" type="text" required />
+        <input
+          id="user_name"
+          name="user_name"
+          type="text"
+          className=" text-black"
+          required
+        />
         <label htmlFor="comment">
           Please enter your comment about {destination.destination_name}
         </label>
-        <textarea id="comment" name="comment" required />
+        <textarea
+          id="comment"
+          name="comment"
+          className=" text-black"
+          required
+        />
         <label htmlFor="recommendation">
           From 1 to 10, with 10 the highest. How likely are you to recommend
           {destination.destination_name}.
@@ -104,6 +116,7 @@ export default async function IndividualDesitinationsPage({ params }) {
           id="recommendation"
           name="recommendation"
           type="number"
+          className=" text-black"
           required
           min={1}
           max={10}
@@ -111,7 +124,7 @@ export default async function IndividualDesitinationsPage({ params }) {
 
         <button
           type="submit"
-          className="border-black-400 border-4 bg-pink-400 p-4 m-4"
+          className=" rd-2 border-4 bg-blue-400 rounded-md p-4 m-4"
         >
           submit
         </button>
@@ -120,17 +133,21 @@ export default async function IndividualDesitinationsPage({ params }) {
       {/* here i need to display the comments associated with the destination */}
       {/* in order to have the delete button in the form and use a function I had to make the button a form as that is how next js can use it in the database similar to the handleSubmit, the value is comment.id and type="hidden"  so the user doesn't see it*/}
       {wrangledComments.map((comment) => (
-        <form action={handleDelete} key={comment.id} className="text-center">
+        <form
+          action={handleDelete}
+          key={comment.id}
+          className="flex flex-col text-center space-x-5 space-y-5"
+        >
           <div className="p-10">
-            <h2>{comment.user_name}</h2>
-            <p>{comment.comment}</p>
-            <p>{comment.recommendation}</p>
+            <h2 className="text-2xl p-5">{comment.user_name}</h2>
+            <p className="text-lg">&quot;{comment.comment}&quot;</p>
+            <p className="p-5">{comment.recommendation}/10 would recommend</p>
             <input type="hidden" value={`${comment.id}`} name="comment_id" />
             <button
               type="submit"
-              className="border-black-400 border-4 bg-pink-400 p-4 m-4"
+              className=" rd-2 border-4 bg-amber-400 rounded-md p-4 m-4"
             >
-              Delete this Post
+              Delete this comment
             </button>
           </div>
         </form>

@@ -1,0 +1,14 @@
+.nav {
+  display: flex;
+  color: white;
+  flex-direction: row;
+  justify-content: space-around;
+  padding: 30px;
+  margin-bottom: 60px;
+  margin-top: 50px;
+  font-size: 30px;
+}
+
+.link:hover {
+  text-decoration: underline;
+}

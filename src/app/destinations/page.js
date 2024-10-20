@@ -12,7 +12,15 @@ export const metadata = {
 };
 
 export default async function DestinationsPage({ searchParams }) {
-  const destinations = await db.query(`SELECT * FROM destinations`);
+  let destinations;
+  if (searchParams.category) {
+    destinations = await db.query(
+      `SELECT * FROM destinations WHERE category_id=$1`,
+      [searchParams.category]
+    );
+  } else {
+    destinations = await db.query(`SELECT * FROM destinations`);
+  }
   console.log(destinations);
   const wrangledDestinations = destinations.rows;
   const sortBy = searchParams.sort;
@@ -39,30 +47,43 @@ export default async function DestinationsPage({ searchParams }) {
 
   return (
     <>
-      <h1 className="text-center p-20">Choose your destination!</h1>
+      <h1 className="text-center text-white text-2xl p-20">
+        Where will your next escape in nature be?
+      </h1>
       {/* finally got the sort by asc and desc working as I was trying to do it in a select tag which would have required me to use onChange which I can't in a server component, didn't realize that I should be using a link, which I saw in the week 7 workshop */}
-      <div className="flex flex-col p-10">
-        <Link href={`destinations?sort=asc`}>
-          Sort Destnations by Ascending
-        </Link>
-        <Link href={`destinations?sort=desc`}>
-          Sort Destnations by Descending
-        </Link>
+      <div className=" flex justify-center text-white border-2 rounded-md p-4 m-4">
+        {searchParams.sort === "desc" ? (
+          <Link href={`destinations?sort=asc`}>
+            Sort Destinations by Ascending
+          </Link>
+        ) : (
+          <Link href={`destinations?sort=desc`}>
+            Sort Destinations by Descending
+          </Link>
+        )}
       </div>
 
-      <ul className="flex flex-col items-center">
+      <ul>
         {sortDestinations.map((destination) => (
-          <>
-            <Link href={`destinations/${destination.id}`} key={destination.id}>
+          <div
+            key={destination.id}
+            className="flex flex-col items-center
+             m-10"
+          >
+            <Link
+              href={`destinations/${destination.id}`}
+              className="text-4xl text-white"
+            >
               {destination.destination_name}
             </Link>
             <Image
               src={destination.image}
               alt={destination.destination_name}
+              className="rounded-lg border-2"
               width={400}
               height={500}
             />
-          </>
+          </div>
         ))}
       </ul>
     </>

@@ -9,13 +9,13 @@ Please submit your database schema, as is mentioned in the submission instructio
 # Database Planning
 
 This was my intial plan. See supabase database schema for update.
-![Draw SQL Database](../week-8-assignment/public/images/Screenshot%202024-10-18%20at%2010.12.42.png)
+![Draw SQL Database](./public/images/Screenshot%202024-10-18%20at%2010.12.42.png)
 
-![Supabase Database](../week-8-assignment/public/images/Screenshot%202024-10-20%20at%2021.27.10.png)
+![Supabase Database](./public/images/Screenshot%202024-10-20%20at%2021.27.10.png)
 
 # Wireframe Plannning
 
-![Ok So Wireframe](../week-8-assignment/public/images/Screenshot%202024-10-18%20at%2010.12.57.png)
+![Ok So Wireframe](./public/images/Screenshot%202024-10-18%20at%2010.12.57.png)
 This was my initial wireframe - I changed it to be only nature based destination and the category sort to happen on the homepage.
 
 # Workflow planning

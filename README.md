@@ -29,7 +29,7 @@ This was my initial wireframe - I changed it to be only nature based destination
 - Sending data to the db
   done
 
-# Still to do
+# Tasks and Comments
 
 - add metadata
   done
